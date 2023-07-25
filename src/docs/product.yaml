@@ -1,0 +1,165 @@
+paths: 
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags: 
+        - Products
+      responses:
+        "200":
+          description: Los productos se obtenieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: Error del servidor
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se solicita.
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto Encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "500":
+          description: Error del servidor
+    put:
+      summary: Modifica un producto por su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del usuario que se solicita
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewOrUpdateRequestBody"
+      responses:
+        "201":
+          description: Producto creado exitosamente!
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "500":
+          description: Error del servidor  
+  /api/products/register:
+    post:
+      summary: Crea un nuevo producto
+      tags: 
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/NewOrUpdateRequestBody"
+      responses:
+        "201":
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "500":
+          description: Error del servidor
+  /api/products/delete/{pid}:
+    delete:
+      summary: Elimina un producto por su id
+      tags: 
+        - Products
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se solicita
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto Eliminado"
+        "500":
+          description: Error del servidor
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id autogenerado
+        title: 
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripción 
+        price: 
+          type: Number
+          description: Precio 
+        stock: 
+          type: Number 
+          desciption: Stock 
+        category:
+          type: String 
+          description: Categoria 
+        thumbnail:
+          type: String 
+          description: Imagen del producto
+      example:
+        _id: Object("4589c6962q87ee54ba617cbe")
+        title: "Pelota de Baloncesto"
+        description: Pelota de baloncesto clasica estandar
+        code: 3324B
+        price: 10000
+        stock: 8
+        category: Deportes
+        thumbnail: "https://cdn.pixabay.com/photo/2020/03/10/16/47/moon-4919501_1280.jpg"
+  requestBodies:
+    NewOrUpdateRequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción 
+        price:
+          type: number
+          description: Precio
+        stock:
+          type: number
+          description: Stock 
+        category:
+          type: string
+          description: Categoría 
+        thumbnail:
+          type: string
+          description: Imagen del producto
+      example:
+        title: "Tabla de Surf"
+        description: "Tabla de surf de dos colores"
+        code: "55283A"
+        price: 4000
+        stock: 15
+        category: "Deportes"
+        thumbnail: "https://cdn.pixabay.com/photo/2016/11/19/10/30/beach-1838501_1280.jpg"
